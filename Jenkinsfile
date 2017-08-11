@@ -46,10 +46,11 @@ pipeline{
    }
   }
 post {
-  agent {
-    label 'apache'
-  }
+
   always {
+    agent {
+      label 'apache'
+    }
     archiveArtifacts artifacts: 'dist/*.jar', fingerprint: true
   }
 }
