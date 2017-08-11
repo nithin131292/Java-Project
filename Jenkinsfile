@@ -44,11 +44,5 @@ pipeline{
        sh "java -jar rectangle_${env.BUILD_NUMBER}.jar 3 3"
      }
    }
-  }
-post {
-  always {
-    archiveArtifacts artifacts: 'dist/*.jar', fingerprint: true
-  }
-}
-
+ }
 }
