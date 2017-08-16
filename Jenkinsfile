@@ -74,7 +74,7 @@ pipeline{
        echo "Merging development into master branch"
        sh 'git merge development'
        echo 'pushing to origin master'
-       sh 'git push --force origin master'
+       sh 'git push origin master'
      }
    }
  }
