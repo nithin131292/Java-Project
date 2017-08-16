@@ -54,7 +54,7 @@ pipeline{
        branch 'master'
      }
      steps{
-       sh "cp /var/www/html/rectangles/all/development/rectangle_${env.BUILD_NUMBER}.jar /var/www/html/rectangles/green/ "
+       sh "cp /var/www/html/rectangles/all/development/rectangle*.jar /var/www/html/rectangles/green/ "
      }
    }
    stage("Promote Development Branch to master"){
@@ -74,7 +74,7 @@ pipeline{
        echo "Merging development into master branch"
        sh 'git merge development'
        echo 'pushing to origin master'
-       sh 'git push --force origin master'
+       sh 'git push origin master'
      }
    }
  }
