@@ -2,7 +2,9 @@ pipeline{
 
   agent none
 
-
+ environment {
+   MAJOR_VERSION = 1
+ }
   stages{
     stage('Unit Tests')
     {
@@ -30,9 +32,7 @@ pipeline{
         label 'apache'
       }
       steps{
-        sh "rm -rf /var/www/html/rectangles/all/${env.BRANCH_NAME}"
-        sh "mkdir /var/www/html/rectangles/all/${env.BRANCH_NAME}"
-        sh "cp dist/rectangle_${env.BUILD_NUMBER}.jar /var/www/html/rectangles/all/${env.BRANCH_NAME}/"
+        sh "cp dist/rectangle_${env.MAJOR_VERSION}.${env.BUILD_NUMBER}.jar /var/www/html/rectangles/all/${env.BRANCH_NAME}/"
       }
     }
 
@@ -42,8 +42,8 @@ pipeline{
        label 'CentOs'
      }
      steps{
-       sh "wget http://nithingudala1.mylabserver.com/rectangles/all/${env.BRANCH_NAME}/rectangle_${env.BUILD_NUMBER}.jar"
-       sh "java -jar rectangle_${env.BUILD_NUMBER}.jar 3 3"
+       sh "wget http://nithingudala1.mylabserver.com/rectangles/all/${env.BRANCH_NAME}/rectangle_${env.MAJOR_VERSION}.${env.BUILD_NUMBER}.jar"
+       sh "java -jar rectangle_${env.MAJOR_VERSION}.${env.BUILD_NUMBER}.jar 3 3"
      }
    }
    stage("Promote to green"){
@@ -54,7 +54,7 @@ pipeline{
        branch 'master'
      }
      steps{
-       sh "cp /var/www/html/rectangles/all/development/rectangle*.jar /var/www/html/rectangles/green/ "
+       sh "cp /var/www/html/rectangles/all/rectangle_${env.MAJOR_VERSION}.${env.BUILD_NUMBER}.jar /var/www/html/rectangles/green/rectangle_${env.MAJOR_VERSION}.${env.BUILD_NUMBER}.jar "
      }
    }
    stage("Promote Development Branch to master"){
@@ -75,6 +75,9 @@ pipeline{
        sh 'git merge development'
        echo 'pushing to origin master'
        sh 'git push origin master'
+       echo 'Tagging the Release'
+       sh "git tag rectangle-${env.MAJOR_VERSION}.${env.BUILD_NUMBER}"
+       sh "git push origin rectangle-${env.MAJOR_VERSION}.${env.BUILD_NUMBER}"
      }
    }
  }
