@@ -70,7 +70,9 @@ pipeline{
        sh 'git stash'
        echo "checking out development branch"
        sh 'git checkout development'
+       sh 'git pull origin development'
        sh 'git checkout master'
+       sh 'git pull origin master'
        echo "Merging development into master branch"
        sh 'git merge development'
        echo 'pushing to origin master'
