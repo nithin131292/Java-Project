@@ -12,7 +12,17 @@ pipeline{
        sayHello 'Awesome Student'
      }
       }
-    
+
+    stage('Git Information'){
+      agent any
+      steps {
+        echo "My Brach Name is: ${env.BRANCH_NAME}"
+        script{
+          def myLib = new linuxacademy.git.gitstuff();
+          echo "My commit: ${myLib.gitCommit("${env.WORKSPACE}/.git")}"
+        }
+      }
+    }
 
 
     stage('Unit Tests')
